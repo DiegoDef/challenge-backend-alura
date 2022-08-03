@@ -1,4 +1,4 @@
-package entities;
+package br.com.challenge.alura.entities;
 
 import lombok.Data;
 
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-public class AbstractMovimento {
+public class AbstractMovimentacao {
 
     @NotBlank
     @Column(name = "DESCRICAO")
@@ -26,5 +26,4 @@ public class AbstractMovimento {
     @NotNull
     @Column(name = "DATA")
     private LocalDate data;
-
 }

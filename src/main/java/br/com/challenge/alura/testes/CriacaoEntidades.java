@@ -1,7 +1,7 @@
-package testes;
+package br.com.challenge.alura.testes;
 
-import entities.Despesa;
-import entities.Receita;
+import br.com.challenge.alura.entities.Despesa;
+import br.com.challenge.alura.entities.Receita;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
