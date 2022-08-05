@@ -5,7 +5,6 @@ import br.com.challenge.alura.entities.Receita;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 public class CriacaoEntidades {
 
@@ -23,12 +22,5 @@ public class CriacaoEntidades {
         despesa.setDescricao(descricao + " 2");
         despesa.setValor(valor.add(BigDecimal.valueOf(2000)));
         despesa.setData(data);
-
-        List.of(receita, despesa)
-                .forEach(entity ->
-                        System.out.println("Descrição: " + entity.getDescricao() +
-                                "\nValor: " + entity.getValor() +
-                                "\nData: " + entity.getData() + "\n")
-                );
     }
 }
