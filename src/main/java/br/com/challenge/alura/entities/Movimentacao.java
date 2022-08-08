@@ -28,4 +28,8 @@ public abstract class Movimentacao {
     @NotBlank
     @Column(name = "DESCRICAO")
     private String descricao;
+
+    @NotNull
+    @Column(name = "MES_ANO")
+    private String mesAno;
 }

@@ -14,13 +14,15 @@ import java.util.List;
 public abstract class AbstractMovimentacaoService<T extends Movimentacao, R extends JpaRepository<T, Long>> {
 
     @Autowired
-    private R repository;
+    protected R repository;
 
-    public T insert(T entidade){
+    public T insert(T entidade) {
+        this.setMesAno(entidade);
         return repository.save(entidade);
     }
 
     public T update(T entidade) {
+        this.setMesAno(entidade);
         return repository.save(entidade);
     }
 
@@ -35,5 +37,11 @@ public abstract class AbstractMovimentacaoService<T extends Movimentacao, R exte
     public T findById(Long id) {
         return repository.findById(id)
                 .orElse(null);
+    }
+
+    private void setMesAno(T entidade) {
+        String ano = Long.toString(entidade.getData().getYear());
+        String mes = Long.toString(entidade.getData().getMonth().getValue());
+        entidade.setMesAno(mes + "/" + ano);
     }
 }
