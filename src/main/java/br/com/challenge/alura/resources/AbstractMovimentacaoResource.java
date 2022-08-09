@@ -4,7 +4,6 @@ import br.com.challenge.alura.dto.MovimentacaoDTO;
 import br.com.challenge.alura.entities.Movimentacao;
 import br.com.challenge.alura.service.AbstractMovimentacaoService;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,28 +20,30 @@ public abstract class AbstractMovimentacaoResource<T extends Movimentacao, R ext
     @Autowired
     private F service;
 
-    private final Class<T> classeEntidade;
+    private final Class<T> entityClass;
 
-    private final Class<R> classeDto;
+    private final Class<R> dtoClass;
 
-    protected AbstractMovimentacaoResource(Class<T> classeEntidade, Class<R> classeDto) {
-        this.classeEntidade = classeEntidade;
-        this.classeDto = classeDto;
+    protected AbstractMovimentacaoResource(Class<T> entityClass, Class<R> dtoClass) {
+        this.entityClass = entityClass;
+        this.dtoClass = dtoClass;
     }
+
+    protected abstract Type getTypeFindAll();
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public R insert(@Valid @RequestBody R dto) {
-        T entidade = modelMapper.map(dto, classeEntidade);
-        return modelMapper.map(this.service.insert(entidade), classeDto);
+        T entidade = modelMapper.map(dto, entityClass);
+        return modelMapper.map(this.service.insert(entidade), dtoClass);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     public R update(@PathVariable("id") Long entidadeId, @Valid @RequestBody R dto) {
-        T entidade = modelMapper.map(dto, classeEntidade);
+        T entidade = modelMapper.map(dto, entityClass);
         entidade.setId(entidadeId);
-        return modelMapper.map(this.service.update(entidade), classeDto);
+        return modelMapper.map(this.service.update(entidade), dtoClass);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -53,15 +54,14 @@ public abstract class AbstractMovimentacaoResource<T extends Movimentacao, R ext
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<T> findAll() {
-        Type listType = new TypeToken<List<R>>(){}.getType();
-        return modelMapper.map(this.service.findall(), listType);
+    public List<R> findAll() {
+        return modelMapper.map(this.service.findall(), getTypeFindAll());
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @RequestMapping("/{id}")
     public R find(@PathVariable Long id) {
-        return modelMapper.map(this.service.findById(id), classeDto);
+        return modelMapper.map(this.service.findById(id), dtoClass);
     }
 }
