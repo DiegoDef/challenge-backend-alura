@@ -54,8 +54,11 @@ public abstract class AbstractMovimentacaoResource<T extends Movimentacao, R ext
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<R> findAll() {
-        return modelMapper.map(this.service.findall(), getTypeFindAll());
+    public List<R> findAll(@RequestParam(required = false) String descricao) {
+        if (descricao == null) {
+            return modelMapper.map(this.service.findAll(), getTypeFindAll());
+        }
+        return modelMapper.map(this.service.findAll(descricao), getTypeFindAll());
     }
 
     @ResponseStatus(HttpStatus.OK)

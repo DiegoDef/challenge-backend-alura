@@ -16,6 +16,8 @@ public abstract class AbstractMovimentacaoService<T extends Movimentacao, R exte
     @Autowired
     protected R repository;
 
+    protected abstract List<T> getFindAllByDescricao(String descricao);
+
     public T insert(T entidade) {
         this.setMesAno(entidade);
         return repository.save(entidade);
@@ -30,9 +32,14 @@ public abstract class AbstractMovimentacaoService<T extends Movimentacao, R exte
         repository.deleteById(id);
     }
 
-    public List<T> findall() {
+    public List<T> findAll() {
         return repository.findAll();
     }
+
+    public List<T> findAll(String descricao) {
+        return this.getFindAllByDescricao(descricao);
+    }
+
 
     public T findById(Long id) {
         return repository.findById(id)
