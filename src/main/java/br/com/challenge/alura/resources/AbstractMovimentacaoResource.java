@@ -10,15 +10,17 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.lang.reflect.Type;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 public abstract class AbstractMovimentacaoResource<T extends Movimentacao, R extends MovimentacaoDTO, F extends AbstractMovimentacaoService<T, ?>> {
 
     @Autowired
-    private ModelMapper modelMapper;
+    protected ModelMapper modelMapper;
 
     @Autowired
-    private F service;
+    protected F service;
 
     private final Class<T> entityClass;
 
@@ -66,5 +68,14 @@ public abstract class AbstractMovimentacaoResource<T extends Movimentacao, R ext
     @RequestMapping("/{id}")
     public R find(@PathVariable Long id) {
         return modelMapper.map(this.service.findById(id), dtoClass);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{ano}/{mes}")
+    public List<R> findAllAnoMes(@PathVariable int ano, @PathVariable int mes) {
+        LocalDate firstDay = LocalDate.of(ano, mes, 1).with(TemporalAdjusters.firstDayOfMonth());
+        LocalDate lastDay = LocalDate.of(ano, mes, 1).with(TemporalAdjusters.lastDayOfMonth());
+
+        return modelMapper.map(this.service.findAllByDataBetween(firstDay, lastDay), this.getTypeFindAll());
     }
 }

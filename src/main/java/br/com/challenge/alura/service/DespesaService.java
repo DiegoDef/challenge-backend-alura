@@ -5,6 +5,7 @@ import br.com.challenge.alura.enums.Categoria;
 import br.com.challenge.alura.repository.DespesaRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -21,5 +22,10 @@ public class DespesaService extends AbstractMovimentacaoService<Despesa, Despesa
     @Override
     protected List<Despesa> getFindAllByDescricao(String descricao) {
         return repository.findAllByDescricaoIgnoreCaseContaining(descricao);
+    }
+
+    @Override
+    public List<Despesa> findAllByDataBetween(LocalDate firstDay, LocalDate lastDay) {
+        return repository.findAllByDataBetween(firstDay, lastDay);
     }
 }

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 
@@ -17,6 +18,8 @@ public abstract class AbstractMovimentacaoService<T extends Movimentacao, R exte
     protected R repository;
 
     protected abstract List<T> getFindAllByDescricao(String descricao);
+
+    public abstract List<T> findAllByDataBetween(LocalDate firstDay, LocalDate lastDay);
 
     public T insert(T entidade) {
         this.setMesAno(entidade);
